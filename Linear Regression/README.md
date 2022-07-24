@@ -1,7 +1,7 @@
 # Linear Regression
 
-- [course link](https://developers.google.com/machine-learning/crash-course/first-steps-with-tensorflow/programming-exercises?hl=zh-cn)
-- [keras api link](https://keras.io/api/models/model_training_apis/#compile-method)
+- [Course](https://developers.google.com/machine-learning/crash-course/first-steps-with-tensorflow/programming-exercises?hl=zh-cn)
+- [Keras API](https://keras.io/api/models/model_training_apis/#compile-method)
 
 ## Code Structure
 

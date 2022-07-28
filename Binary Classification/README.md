@@ -108,7 +108,7 @@ feature_layer(dict(train_df_norm));
 
 feature columns 的作用主要是做一些特征工程的工作。google 官方文档对它的定义是：
 
-**feature columns—a data structure describing the features that an Estimator requires for training and inference**
+**feature columns-a data structure describing the features that an Estimator requires for training and inference**
 
 对于神经网络来说，输入 input 应该是 number 类型的，因为神经网络里的每个 neuron 都是做一些加减乘除操作。但是真实世界的数据的类型是多种多样的，有数字类型(number)，有分类类型(categorical)，分类类型通常会用 vector 来替代。
 
@@ -117,8 +117,21 @@ feature columns 的作用是：**feature columns bridge raw data with the data y
 ![图片](https://3.bp.blogspot.com/-3Wf_6BEn7GE/Wg4GiQ9TXDI/AAAAAAAAEGo/yoLiIyJW1c4Vh-VfP4vVjuaD92rcnVphACLcBGAs/s1600/2.jpg)
 
 
+feature columns package 的一些方法：
+![图片](https://4.bp.blogspot.com/-geC5Hmnhtto/Wg4Gsl15_MI/AAAAAAAAEGs/A8idgWJnjUASspX_JRiOOqiykVl_LD7VwCLcBGAs/s1600/3.jpg)
+
+从图中可以看出，Categorical Column 和 Dense Column 各自有一些方法，bucketized_column 继承了这两个类:
+
+- Numeric Column: 将原数据转换成各种数据类型（默认是 tf.float32，可以转换成 tf.float 64、矩阵等）
+- Bucketized Column: 将原数据归类到各个 Bucket 中
+![图片](https://2.bp.blogspot.com/-qrTI2ZUBr7w/Wg4G9lWHk5I/AAAAAAAAEG0/v17Zqcix1Wou5ZRpTGxAQ8jMSBjCKmCAACLcBGAs/s1600/4.jpg)
 
 
+ Date Range	 Represented as...
+ < 1960	 [1, 0, 0, 0]
+ >= 1960 but < 1980 	 [0, 1, 0, 0]
+ >= 1980 but < 2000 	 [0, 0, 1, 0]
+ > 2000	 [0, 0, 0, 1]
 
 
 

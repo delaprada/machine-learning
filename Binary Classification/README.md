@@ -122,16 +122,116 @@ feature columns package 的一些方法：
 
 从图中可以看出，Categorical Column 和 Dense Column 各自有一些方法，bucketized_column 继承了这两个类:
 
-- Numeric Column: 将原数据转换成各种数据类型（默认是 tf.float32，可以转换成 tf.float 64、矩阵等）
-- Bucketized Column: 将原数据归类到各个 Bucket 中
+- *Numeric Column*: 将原数据转换成各种数据类型（默认是 tf.float32，可以转换成 tf.float 64、矩阵等）
+- *Bucketized Column*: 将原数据归类到各个 Bucket 中
 ![图片](https://2.bp.blogspot.com/-qrTI2ZUBr7w/Wg4G9lWHk5I/AAAAAAAAEG0/v17Zqcix1Wou5ZRpTGxAQ8jMSBjCKmCAACLcBGAs/s1600/4.jpg)
 
 
- Date Range	 Represented as...
- < 1960	 [1, 0, 0, 0]
- >= 1960 but < 1980 	 [0, 1, 0, 0]
- >= 1980 but < 2000 	 [0, 0, 1, 0]
- > 2000	 [0, 0, 0, 1]
+  Date Range Represented as:
+  |  年份   | 经过 feature column 转换  |
+  |  ----  | ----  |
+  | 1960  | [1, 0, 0, 0] |
+  | >= 1960 but < 1980  | [0, 1, 0, 0] |
+  | >= 1980 but < 2000  | [0, 0, 1, 0] |
+  | > 2000 | [0, 0, 0, 1] |
+- *Categorical Vocabulary Column*: 用 one-hot vector 表示字符串
+
+  ![图片](https://1.bp.blogspot.com/-tATYn91S0Mw/Wg4HVJgTy6I/AAAAAAAAEG8/I0GiWJH0aBYSwfuyBFGwRiS0SHVVGrNngCLcBGAs/s1600/6.jpg)
+
+- *Indicator columns*: 每一类别用 one-hot vector 中的一维来表示
+- *Embedding columns*: 相比起 Indicator columns 用一维来表示一个类别（会造成整个 vector 的维数太多），Embedding columns 可以用更少的维数来表示一个类别
+
+![图片](https://2.bp.blogspot.com/-q7GLL9Z95uY/Wg4KIyRryYI/AAAAAAAAEHc/BckVSXOmT1M0qs79D60t2XMv1RFNSd89gCLcBGAs/s1600/image9.jpg)
+
+推荐阅读：
+- [Introducing tensorflow feature columns](https://developers.googleblog.com/2017/11/introducing-tensorflow-feature-columns.html)
+- [Demonstration of tensorflow feature columns](https://medium.com/ml-book/demonstration-of-tensorflow-feature-columns-tf-feature-column-3bfcca4ca5c4#id_token=eyJhbGciOiJSUzI1NiIsImtpZCI6IjA3NGI5MjhlZGY2NWE2ZjQ3MGM3MWIwYTI0N2JkMGY3YTRjOWNjYmMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJuYmYiOjE2NTg5NzcwNjksImF1ZCI6IjIxNjI5NjAzNTgzNC1rMWs2cWUwNjBzMnRwMmEyamFtNGxqZGNtczAwc3R0Zy5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsInN1YiI6IjEwNzk4MjcxNjIxMTc0ODc2NDE0MyIsImVtYWlsIjoiZGVsYXByYWRhemhhb0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXpwIjoiMjE2Mjk2MDM1ODM0LWsxazZxZTA2MHMydHAyYTJqYW00bGpkY21zMDBzdHRnLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwibmFtZSI6ImFsaWNlIHpoYW8iLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUl0YnZtbGwzUFM3cm52OXpTYXpiaXl1eG51NXRJanNqN3NCT0Z6Z3Z0R1E9czk2LWMiLCJnaXZlbl9uYW1lIjoiYWxpY2UiLCJmYW1pbHlfbmFtZSI6InpoYW8iLCJpYXQiOjE2NTg5NzczNjksImV4cCI6MTY1ODk4MDk2OSwianRpIjoiMWQyMmIxMTk2YjkwOTlhMzE2MDM2ZGJjOWNhNTZhNmNkNzcxZmQ1NyJ9.Sc6QCUsOt4pSzOPYlRnRtdxeK0sO0vRt6B0IgJ4xXgpLgh9yxD5Blr0G774xZ2i0Sht-n8Cxo5tSAs3nvu7SIA0Sev9vt9r7g75Hpv-rQX6Q2EzviNmSE08iP43POx74hTzkoEWvq7sDfnv7vgvqDJ2yY3LTYfmb_ZC43_uzidLJIZjM7RUbeEhoydfan4g61U4e8goyaOae75oZZ3SjcN5bYxEEo0ITNxT_fuumyjYt81gR3S1cvsNTMZVVEXKT6YpOqEJmd8Ci6hhWk41JPwdtbmmAcLBEiUy5b5mvUUghTBD5y9t00Agb-Ile_b6MTylVuQe7yT56Yxhds6VrmA)
+### 创建模型
+
+```python
+def create_model(my_learning_rate, feature_layer, my_metrics):
+    model = tf.keras.models.Sequential();
+    
+    model.add(feature_layer);
+    
+    # units 和 input_shape 为什么是 1 ？
+    model.add(tf.keras.layers.Dense(units=1, input_shape=(1,), activation=tf.sigmoid),);
+    
+    model.compile(optimizer=tf.keras.optimizers.RMSprop(lr = my_learning_rate),
+                  loss = tf.keras.losses.BinaryCrossentropy(),
+                  metrics = my_metrics);
+    
+    return model;
+```
+
+创建模型时将刚刚通过 feature columns 创建的 feature layer 添加到 model 中，然后再添加一层 neuron，激活函数选择 sigmoid。
+
+并为模型选择 gradient decent 方法（此处选择的是 RMSprop 方法），因为题目是分类问题，所以损失函数选择的是 CrossEntropy。
+
+
+### 训练模型
+
+```python
+def train_model(model, dataset, epochs, label_name, batch_size = None, shuffle = True):
+    features = {name: np.array(value) for name, value in dataset.items()};
+    label = np.array(features.pop(label_name));
+    history = model.fit(x=features, y=label, batch_size=batch_size, epochs=epochs, shuffle=shuffle);
+    
+    epochs = history.epoch;
+    
+    hist = pd.DataFrame(history.history);
+    
+    return epochs, hist;
+```
+
+将数据传入模型进行训练。
+
+### 画出 accuracy 随着 epoch 的进行的变化
+
+```python
+# plot the relation between epoch and one or more classification metrics
+def plot_curve(epochs, hist, list_of_metrics):
+    plt.figure();
+    plt.xlabel("Epoch");
+    plt.ylabel("Value");
+    
+    for m in list_of_metrics:
+        x = hist[m];
+        plt.plot(epochs[1:], x[1:], label=m);
+    
+    plt.legend();
+```
+
+### Main 函数
+
+```python
+# main function
+learning_rate = 0.001;
+epochs = 20;
+batch_size = 100;
+label_name = "median_house_value_is_high";
+classification_threshold = 0.52; # metrics 的 cut point
+
+# Establish the metrics the model will measure.
+METRICS = [
+#            tf.keras.metrics.BinaryAccuracy(name='accuracy', 
+#                                            threshold=classification_threshold),
+#            tf.keras.metrics.Precision(name='precision', thresholds=classification_threshold),
+#            tf.keras.metrics.Recall(name='recall', thresholds=classification_threshold),
+            tf.keras.metrics.AUC(num_thresholds=100, name='auc'),
+          ];
+
+my_model = create_model(learning_rate, feature_layer, METRICS);
+
+epochs, hist = train_model(my_model, train_df_norm, epochs, label_name, batch_size, True);
+
+list_of_metrics_to_plot = ["auc"];
+
+plot_curve(epochs, hist, list_of_metrics_to_plot);
+```
+
+只看 accuracy 在数据集分布不均时是不能够正确衡量模型的性能的，所以可以通过看其他指标，如 precision, recall, auc 来衡量模型性能。
+
 
 
 

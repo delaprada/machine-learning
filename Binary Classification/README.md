@@ -65,8 +65,7 @@ train_df_std = train_df.std();
 train_df_norm = (train_df - train_df_mean)/train_df_std;
 ```
 
-normalize 可以使每个属性的数据均分布在某个范围内（比如：-3～3），这样训练起来更快。如果不做 normalize 操作，模型在训练的时候就会过度关注数值范围
-更大的属性上。
+normalize 可以使每个属性的数据均分布在某个范围内（比如：-3～3），这样训练起来更快。如果不做 normalize 操作，模型在训练的时候就会过度关注数值范围更大的属性上。
 
 ### 5. 自定义 label
 
@@ -106,4 +105,26 @@ feature_layer = layers.DenseFeatures(feature_columns);
 
 feature_layer(dict(train_df_norm));
 ```
+
+feature columns 的作用主要是做一些特征工程的工作。google 官方文档对它的定义是：
+
+**feature columns—a data structure describing the features that an Estimator requires for training and inference. **
+
+对于神经网络来说，输入 input 应该是 number 类型的，因为神经网络里的每个 neuron 都是做一些加减乘除操作。但是真实世界的数据的类型是多种多样的，有数字类型(number)，有分类类型(categorical)，分类类型通常会用 vector 来替代。
+
+feature columns 的作用是：**feature columns bridge raw data with the data your model needs**。
+
+![图片](https://3.bp.blogspot.com/-3Wf_6BEn7GE/Wg4GiQ9TXDI/AAAAAAAAEGo/yoLiIyJW1c4Vh-VfP4vVjuaD92rcnVphACLcBGAs/s1600/2.jpg)
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -108,7 +108,7 @@ feature_layer(dict(train_df_norm));
 
 feature columns 的作用主要是做一些特征工程的工作。google 官方文档对它的定义是：
 
-**feature columns—a data structure describing the features that an Estimator requires for training and inference. **
+**feature columns—a data structure describing the features that an Estimator requires for training and inference**
 
 对于神经网络来说，输入 input 应该是 number 类型的，因为神经网络里的每个 neuron 都是做一些加减乘除操作。但是真实世界的数据的类型是多种多样的，有数字类型(number)，有分类类型(categorical)，分类类型通常会用 vector 来替代。
 
